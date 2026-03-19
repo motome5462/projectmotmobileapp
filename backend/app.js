@@ -10,6 +10,7 @@ app.use(express.json());
 // Auth Routes
 app.post('/api/login', authController.login);
 app.post('/api/logout', authController.logout);
+app.post('/api/register', authController.register);
 
 // Product Routes
 app.get('/api/products', productController.getProducts);

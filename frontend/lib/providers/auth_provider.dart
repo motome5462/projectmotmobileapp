@@ -17,7 +17,7 @@ class AuthProvider with ChangeNotifier {
   Future<bool> login(String username, String password) async {
     try {
       final response = await http.post(
-        Uri.parse('http://your-api-url:3000/api/login'),
+        Uri.parse('http://10.0.2.2:3000/api/login'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'username': username, 'password': password}),
       );
@@ -46,7 +46,7 @@ class AuthProvider with ChangeNotifier {
   Future<void> logout() async {
     if (_logId != null) {
       await http.post(
-        Uri.parse('http://your-api-url:3000/api/logout'),
+        Uri.parse('http://10.0.2.2:3000/api/logout'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'log_id': _logId}),
       );

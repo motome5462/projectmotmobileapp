@@ -67,3 +67,27 @@ exports.logout = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
+exports.register = async (req, res) => {
+    const { username, password, full_name, role, dept_id } = req.body;
+    try {
+        // 1. Hash รหัสผ่าน
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        // 2. บันทึกข้อมูลลงตาราง Users
+        const [userResult] = await db.execute(
+            'INSERT INTO Users (full_name, role, dept_id) VALUES (?, ?, ?)',
+            [full_name, role, dept_id]
+        );
+
+        // 3. บันทึกข้อมูลลงตาราง User_Auth
+        await db.execute(
+            'INSERT INTO User_Auth (user_id, username, password_hash) VALUES (?, ?, ?)',
+            [userResult.insertId, username, hashedPassword]
+        );
+
+        res.json({ message: "ลงทะเบียนผู้ใช้สำเร็จ!" });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
